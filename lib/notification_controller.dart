@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  String? token;
 
   @override
   void onInit() async{
@@ -21,7 +22,9 @@ class NotificationController extends GetxController {
       sound: true,
     );
     // 첫 빌드시 토큰 값 프린트
-    _getToken();
+    token = await saveTokenToRef();
+    print('------------------------');
+    print(token);
     // 첫 빌드시 스트림 on 그럼 이제 이 파이프라인을 따라 데이터가 들어올 때마다 메소드
     // 내부의 listener 가 실행됨.
     _onMessage();
@@ -30,10 +33,10 @@ class NotificationController extends GetxController {
   }
 
 
-  Future<void> _getToken() async {
+  Future<String?> saveTokenToRef() async {
     try{
       String? token = await messaging.getToken();
-      print(token);
+      return token;
     } catch (e){}
   }
 
@@ -55,7 +58,7 @@ class NotificationController extends GetxController {
 
     await flutterLocalNotificationsPlugin.initialize(
         InitializationSettings(
-            android: AndroidInitializationSettings('@mipmap/ic_launcher'), iOS: IOSInitializationSettings()),
+            android: AndroidInitializationSettings('launcher_icon'), iOS: IOSInitializationSettings()),
         onSelectNotification: (String? payload) async {
           Get.to(()=>NotificationDetailPage(title: '앱이 켜져있는 상황',), arguments: payload);
         });
@@ -74,7 +77,8 @@ class NotificationController extends GetxController {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                channelDescription: channel.description
+                channelDescription: channel.description,
+                //icon: '@mipmap/launcher_icon'
               ),
             ),
             payload: message.data['argument']
