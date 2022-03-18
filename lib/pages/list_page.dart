@@ -52,7 +52,7 @@ class ListPage extends GetView<ListPageController> {
                       return ListTile(
                         title: Text(data['name']),
                         subtitle: Text(data['hobby']),
-                        leading: Text(data['age']),
+                        leading: Text(data['age'].toString()),
                         trailing: SizedBox(
                           width: 100,
                           child: Row(
@@ -61,12 +61,6 @@ class ListPage extends GetView<ListPageController> {
                                 icon: Icon(Icons.arrow_back),
                                 onPressed: (){
                                   document.reference.delete();
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.update),
-                                onPressed: (){
-                                  controller.updateUserAge(document.id, '100');
                                 },
                               ),
                               IconButton(
