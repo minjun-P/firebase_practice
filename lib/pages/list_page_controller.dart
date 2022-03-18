@@ -36,6 +36,13 @@ class ListPageController {
     });
     print(resp);
   }
+  Future<void> change(String docId) async{
+    HttpsCallable callable = functions.httpsCallable('updateUsers');
+    final resp = await callable.call(<String, String> {
+      'doc':docId
+    });
+    print(resp);
+  }
 
 }
 class User {

@@ -68,6 +68,12 @@ class ListPage extends GetView<ListPageController> {
                                 onPressed: (){
                                   controller.updateUserAge(document.id, '100');
                                 },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.update_disabled_rounded),
+                                onPressed: (){
+                                  controller.change(document.id);
+                                },
                               )
                             ],
                           ),
